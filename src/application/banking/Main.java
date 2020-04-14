@@ -1,59 +1,46 @@
 package banking.application;
-import java.util.Scanner;
 
 public class Main {
-    private static Bank bank = new Bank();
+
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-        repeat();
+ 
+        Bank bank = new Bank("National Bank");
 
-        boolean flag=true;
-        while(flag) {
-            System.out.println("Enter your choice:");
-            String choice = scan.nextLine();
-            switch (choice){
-                case "1": addBranch();
-                    break;
-                case"2" : print();
-                    break;
-                case "3": addCustomer();
-                    break;
-                case"4": additionalTransactions();
-                    break;
-                case "5":  repeat();
-                    break;
-                case "6": flag =false;
-                    break;
-                default:
-                    System.out.println("Incorrect Value!");
-            }
-
+        if(bank.addBranch("Adelaide")) {
+            System.out.println("Adelaide branch created");
         }
-    }
 
-    private static void repeat() {
-        System.out.println("MENU......");
-        System.out.println("1. To add a new branch of this Bank ");
-        System.out.println("2. To print out the customers of a particular branch and its transactions");
-        System.out.println("3. To add customers to a particular Branch");
-        System.out.println("4. To add additional transactions of a particular customer");
-        System.out.println("5. To repeat the menu.");
-        System.out.println("6. Quit");
-    }
+        bank.addCustomer("Adelaide", "John", 50.05);
+        bank.addCustomer("Adelaide", "Mike", 175.34);
+        bank.addCustomer("Adelaide", "Percy", 220.12);
 
-    private static void additionalTransactions() {
-        bank.addCustomerTransaction();
-    }
+        bank.addBranch("Sydney");
+        bank.addCustomer("Sydney", "Bob", 150.54);
 
-    private static void addCustomer() {
-        bank.addCustomer();
-    }
+        bank.addCustomerTransaction("Adelaide", "John", 44.22);
+        bank.addCustomerTransaction("Adelaide", "John", 12.44);
+        bank.addCustomerTransaction("Adelaide", "Mike", 1.65);
 
-    private static void print() {
-        bank.listCustomers();
-    }
+        bank.listCustomers("Adelaide", true);
+        bank.listCustomers("Sydney", true);
 
-    private static void addBranch() {
-        bank.addBranch();
+        bank.addBranch("Melbourne");
+
+        if(!bank.addCustomer("Melbourne", "Brian", 5.53)) {
+            System.out.println("Error Melbourne branch does not exist");
+        }
+
+        if(!bank.addBranch("Adelaide")) {
+            System.out.println("Adelaide branch already exists");
+        }
+
+        if(!bank.addCustomerTransaction("Adelaide", "Fergus", 52.33)) {
+            System.out.println("Customer does not exist at branch");
+        }
+
+        if(!bank.addCustomer("Adelaide", "John", 12.21)) {
+            System.out.println("Customer John already exists");
+        }
+        
     }
 }
